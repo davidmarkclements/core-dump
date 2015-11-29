@@ -149,6 +149,25 @@ to generate. This means that using it in production on every 1000 requests
 is only a good idea if there is time sensitive load balance switching infrastructure,
 or where traffic is merely being duplicated for profiling purposes. 
 
+## Auto Core Dumps
+
+Common signals that are described in POSIX docs as core generators file will 
+automatically have a core file generated. 
+
+Signals with auto core dumps are: 
+
+* SIGHUP
+* SIGQUIT
+* SIGABRT
+* SIGTERM
+
+If a core-dump enabled process receives one of these signals it will generate
+a core file after the pattern `<SIGNAME>.core`, e.g. `SIGTERM.core`. 
+
+Similarly, if uncaught exception auto core dumps are enabled they will have the pattern
+`uncaught-exception.core`.
+
+
 ## Debug
 
 For both running the CLI or enabling core-dump for a process, simply set a
@@ -162,7 +181,29 @@ $ DEBUG=core-dump core-dump 16002
 $ DEBUG=core-dump node -r `core-dump` my-app.js
 ```
 
+## SIGTRAP
 
+We use the SIGTRAP signal to generate a core file *without* shutting
+down the process. This is actually an abuse as SIGTRAP is supposed to
+close the process. However, since there is *no* signal that simultaneously
+generates a core file and doesn't cause a process exit we chose SIGTRAP
+because it's generally only used in debuggers (e.g. `gdp`).
+
+## Using `kill`
+
+We don't *have* to use the `core-dump` CLI, it's more for convenience. 
+As long as core-dump is required into the process a signal can be sent
+to that process with `kill` to generate a core file:
+
+```sh
+kill -s SIGTRAP <pid>
+```
+
+And to core dump and exit:
+
+```sh
+kill -s SIGABRT <pid>
+```
 
 
 
