@@ -22,7 +22,7 @@ npm i --save core-dump
 
 ## Enabling core-dump for a process
 
-If core-dump is only installed globally, execute core-dump
+If `core-dump` is only installed globally, execute `core-dump`
 in a command substitution context (e.g. backticks or dollar brackets)
 as it is passed to the `-r` flag
 
@@ -31,7 +31,7 @@ node -r $(core-dump) my-app.js
 node -r `core-dump` my-app.js
 ```
 
-If it's a local module, then we simply require the module at the command line
+If it's a local module, then we can pass the module as-is to the `-r` flag:
 
 ```
 node -r core-dump my-app.js
@@ -62,25 +62,23 @@ exceptions).
 
 ### Enabling core-dump hooks programatically
 
-If locally installed, we can also require setup the core-dump hooks
-programmatically
+If locally installed, we can also require `core-dump` and call the `setup` function
 
 ```js
-//note: args here are defaults
-var args = {
+//note: options object optional, supplied values here are defaults:
+require('core-dump').setup({
   'core-dump-on-sighup': false,
   'core-dump-on-uncaught-exception': true
-}
-require('core-dump').setup(args)
+})
 ```
 
-For programmatically generating core dumps on the fly, see [Getting a core file programatically](#getting-a-core-file-programatically)
+For programmatically generating core dumps on the fly, see [Getting a core file programatically](https://github.com/davidmarkclements/core-dump#getting-a-core-file-programatically)
 
 
 ## Getting a core file from command line
 
 First we need the PID of the process. `core-dump` keeps a list of 
-PIDs of node processes that have core-dump included.
+PIDs of node processes have loaded `core-dump` on initialization:
 
 ```sh
 $ core-dump 
@@ -122,7 +120,7 @@ $ core-dump 16002 --abort
 
 ## Getting a core file programatically
 
-Here's an example where we get a core is generated every 1000 HTTP requests:
+Here's a contrived example where a core is generated every 1000 HTTP requests:
 
 ```js
 var http = require('http')
@@ -136,7 +134,7 @@ http.createServer(function (req, res) {
 }).listen(8080)
 ```
 
-There are more interesting applications - for instance if we can determine
+There are more interesting applications. For instance if we can determine
 CPU saturation by our process and generate a core file at around 90% capacity
 it may help us to determine the causes behind CPU thrashing. Same approach
 could be applied to memory leaks.
@@ -163,7 +161,6 @@ $ DEBUG=core-dump core-dump 16002
 ```sh
 $ DEBUG=core-dump node -r `core-dump` my-app.js
 ```
-
 
 
 
