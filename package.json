@@ -1,7 +1,7 @@
 {
   "name": "core-dump",
   "version": "0.0.2",
-  "description": "",
+  "description": "Generate node core dumps with having to abort, regardless of ulimit -c setting",
   "main": "index.js",
   "bin": {
     "core-dump": "./cmd.js"
@@ -23,5 +23,17 @@
     "gcore": "0.0.3",
     "minimist": "^1.2.0",
     "ps-list": "^3.1.0"
-  }
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidmarkclements/core-dump.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davidmarkclements/core-dump/issues"
+  },
+  "homepage": "https://github.com/davidmarkclements/core-dump#readme"
 }
