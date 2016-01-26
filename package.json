@@ -1,6 +1,6 @@
 {
   "name": "core-dump",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Generate node core dumps with having to abort, regardless of ulimit -c setting",
   "main": "index.js",
   "bin": {
